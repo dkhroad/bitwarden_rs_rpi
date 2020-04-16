@@ -1,2 +1,5 @@
 /bitwarden.env
 /bitwarden_backup.env
+/ssl
+/bw-data
+/log
