@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+ bitwarden:
+  image: bitwardenrs/server:alpine
+  #image: bitwardenrs/server:armv6
+  restart: always
+  volumes:
+      - ./bw-data:/data
+      - ./logs:/logs
+      - ./ssl:/ssl
+  ports:
+    - 443:8080
+  env_file: bitwarden.env
+  environment:
+    ROCKET_PORT: '8080'
+   # Hardening
+    SIGNUPS_ALLOWED: 'false'
+
+  bitwarden_backup:
+    image: dkhroad/bitwardenrs_dropbox_backup:alpine
+    #image: dkhroad/bitwardenrs_dropbox_backup:armv6
+    restart: always
+    depends_on:
+      - bitwarden
+    volumes: 
+      - ./bw-data:/data
+      - ./logs:/logs 
+    env_file: bitwarden_backup.env 
+    environment:
+      LOGFILE: /logs/backup.log
+
+
+
+
+
